@@ -1,0 +1,59 @@
+---
+- name: Creates prome and node_exporter users
+  ansible.builtin.user:
+    name: "{{ item }}"
+    shell: "/bin/false"
+    create_home: false
+  loop:
+    - prome
+    - node_exporter
+
+- name: Creates directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /etc/prometheus
+    - /var/lib/prometheus
+
+- name: "Download Prometheus https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+  get_url:
+    url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+    dest: /tmp
+    mode: '0644'
+
+- name: Extract the Prometheus archive
+  unarchive:
+    src: "/tmp/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
+    dest: "/tmp"
+    remote_src: true
+
+- name: Copy the “prometheus” and “promtool” binary files to the /usr/local/bin.
+  copy:
+    src: "{{ item }}"
+    dest: /usr/local/bin/
+    remote_src: true
+  loop:
+    - prometheus-{{ prometheus_version }}.linux-amd64/prometheus 
+    - prometheus-{{ prometheus_version }}.linux-amd64/promtool
+
+- name: change the ownership of the “prometheus” and “promtool” binary files
+  file:
+    path: "{{ item }}"
+    owner: prome
+    group: prome
+    mode: '0744'
+  loop:
+    - /usr/local/bin/prometheus
+    - /usr/local/bin/promtool
+    - /etc/prometheus/consoles 
+    - console_libraries
+
+- name: Copy the required libraries to the /etc/prometheus directory.
+  copy:
+    src: "{{ item }}"
+    dest: /etc/prometheus 
+    remote_src: true
+  loop:
+    - "prometheus-{{ prometheus_version }}.linux-amd64/consoles" 
+    - "prometheus-{{ prometheus_version }}.linux-amd64/console_libraries"

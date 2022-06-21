@@ -1,0 +1,24 @@
+---
+- name: Download the node_exporter
+  get_url:
+    url: "https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz"  
+    dest: /tmp
+    mode: '0644'  
+
+- name: Extract the archive
+  unarchive:
+    src: "/tmp/node_exporter-1.3.1.linux-amd64.tar.gz"  
+    dest: "/tmp"
+    remote_src: true
+- name: Copy the binaries files to the /usr/local/bin directory and change the ownership. 
+  copy:
+    src: /tmp/node_exporter-1.3.1.linux-amd64/node_exporter
+    dest: "usr/local/bin"  
+    remote_src: true
+
+- name:  Set the ownership of the directory
+  file:
+    path: "/usr/local/bin/node_exporter"
+    owner: node_exporter  
+    group: node_exporter
+    mode: '0744'

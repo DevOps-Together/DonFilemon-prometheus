@@ -21,10 +21,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       if Vagrant.has_plugin?("vagrant-vbguest") then
     		config.vbguest.auto_update = false
   		end
-      #srv.vm.provision "ansible" do |ansible|
-      #  ansible.verbose = "v"
-      #  ansible.playbook = servers['playbooks']
-      #end
+      srv.vm.provision "ansible" do |ansible|
+        ansible.verbose = "v"
+        ansible.playbook = servers['playbooks']
+      end
     end
   end
 end
