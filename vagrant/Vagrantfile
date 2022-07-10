@@ -1,0 +1,30 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'yaml'
+
+VAGRANTFILE_API_VERSION  = "2"
+Vagrant.require_version ">=1.6.0"
+
+servers = YAML.load_file('./machines.yaml')
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  servers.each do |servers|
+    config.vm.define servers["name"] do |srv|
+      srv.vm.box = servers["box"]
+      srv.vm.network servers['type_net'], ip: servers['ip_address']
+      srv.vm.provider :virtualbox do |vb|
+        vb.name = servers['name']
+        vb.customize ["modifyvm", :id, "--cpus", servers['vcpu']]
+        vb.memory = servers['memory']
+      end
+      if Vagrant.has_plugin?("vagrant-vbguest") then
+    		config.vbguest.auto_update = false
+  		end
+      srv.vm.provision "ansible" do |ansible|
+        ansible.verbose = "v"
+        ansible.playbook = servers['playbooks']
+      end
+    end
+  end
+end

@@ -1,0 +1,7 @@
+---
+# handlers file for prometheus
+- name: Reload systemd
+  systemd:
+    deamon_ reload: yes 
+  become: yes
+        #$ sudo systemctl daemon-reload

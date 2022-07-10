@@ -1,0 +1,28 @@
+---
+
+- name: Add the key to your APT installation’s list of trusted keys 
+  apt_key:
+    url: " https://packages.grafana.com/gpg.key"
+    state: present
+
+- name: add the Grafana repository
+  apt_repository:
+    repo: "deb https://packages.grafana.com/oss/deb stable main"
+    state: present 
+    filename: grafana
+
+- name: Install grafana
+  apt:
+    name: grafana
+    update_cache: yes
+
+- name: Start Grafana-server service
+  systemd:
+    state: started
+    name: grafana-server
+
+- name: Enable Grafana-server service
+  systemd:
+    name: grafana-server
+    enabled: true
+    masked: false

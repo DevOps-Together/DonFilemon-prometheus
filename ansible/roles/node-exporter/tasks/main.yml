@@ -1,0 +1,4 @@
+---
+# tasks file for node-exporter
+- include_tasks: configuration_node-exporter.yml
+- include_tasks: configuration_prometheus.yml
