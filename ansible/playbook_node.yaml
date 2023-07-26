@@ -1,0 +1,5 @@
+---
+- hosts: Ubuntu_Node-exporter
+  bacome: true
+  roles:
+    - node-exporter

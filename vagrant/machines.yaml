@@ -1,0 +1,22 @@
+---
+- name: "Ubuntu_Prometheus"
+  box: "ubuntu/focal64" 
+  memory: 3048
+  vcpu: 1
+  type_net: "private_network"
+  ip_address: "172.17.8.101"
+  playbooks: "../ansible/playbook_prometheus.yaml" 
+- name: "Ubuntu_Grafana"
+  box: "ubuntu/focal64" 
+  memory: 3048
+  vcpu:  1
+  type_net: "private_network"
+  ip_address: "172.17.8.102"
+  playbooks: "../ansible/playbook_grafana.yaml" 
+- name: "Ubuntu_Node-exporter"
+  box: "ubuntu/focal64" 
+  memory: 3048
+  vcpu: 1
+  type_net: "private_network"
+  ip_address: "172.17.8.103"
+  playbooks: "../ansible/playbook_node.yaml" 

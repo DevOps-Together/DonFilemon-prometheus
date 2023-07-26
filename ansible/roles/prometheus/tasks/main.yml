@@ -1,0 +1,5 @@
+---
+# tasks file for prometheus
+- include_tasks: install_nginx.yml 
+- include_tasks: initial_configuration_prometheus.yml
+- include_tasks: configuration_prometheus.yml
