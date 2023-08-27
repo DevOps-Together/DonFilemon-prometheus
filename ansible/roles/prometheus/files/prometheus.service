@@ -1,17 +1,18 @@
 [Unit]                                                                                                        
-Description=Prometheus                                                                                        
+Description=Prometheus   
+Documentation=https://prometheus.io/docs/introduction/overview/                                                                                     
 Wants=network-online.target                                                                                   
 After=network-online.target                                                                                   
 
 [Service]                                                                                                     
 User=prome                                                                                                    
-Group=prome                                                                                                   
+Group=prome  
+Restart=on-failure                                                                                                 
 Type=simple                                                                                                   
-ExecStart=/usr/local/bin/prometheus \                                                                         
-		--config.file /etc/prometheus/prometheus.yml \                                                            
-  	--storage.tsdb.path /var/lib/prometheus/ \                                                                
-  	--web.console.templates=/etc/prometheus/consoles \                                                        
-  	--web.console.libraries=/etc/prometheus/console_libraries                                                 
+ExecStart=/usr/local/bin/prometheus --config.file=/etc/prometheus/prometheus.yml \                                                            
+--storage.tsdb.path=/var/lib/prometheus/ \                                                                
+--web.console.templates=/etc/prometheus/consoles \                                                        
+--web.console.libraries=/etc/prometheus/console_libraries                                                 
 
 [Install]                                                                                                     
 WantedBy=multi-user.target
