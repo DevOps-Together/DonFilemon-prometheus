@@ -1,2 +1,5 @@
-# automatyczne namiary na prometheus do grafanay cokiuje plik z parametreami prometheusa
-#
+---
+- name: "return prometheus ipv4 and port"
+  debug:
+    var: hostvars[inventory_hostname]
+  register: prometheus_ipv4

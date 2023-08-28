@@ -1,8 +1,9 @@
 ---
 
 - name: Template create configuration file named prometheus.yml in the /etc/prometheus directory   
-  src: prometheus.j2
-  dest: /etc/prometheus/prometheus.yml
+  template:
+    src: "{{ role_path }}/templates/prometheus.j2"
+    dest: /etc/prometheus/prometheus.yml
 
 - name: Copy prometheus.service
   copy:
@@ -14,10 +15,5 @@
 - name: Start Prometheus service
   systemd:
     state: started
+    enabled: yes
     name: prometheus
-
-- name: Enable Prometheus service
-  systemd:
-    state: enabled
-    name: prometheus
-
