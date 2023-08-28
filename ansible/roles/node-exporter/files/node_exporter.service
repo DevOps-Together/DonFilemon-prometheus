@@ -1,0 +1,12 @@
+[Unit]
+Description=Node Exporter
+Documentation=https://prometheus.io/docs/guides/node-exporter/                                                                              
+
+[Service]
+User=node_exporter
+Group=node_exporter
+Restart=on-failure                                                                                                 
+ExecStart=/usr/local/bin/node_exporter 
+
+[Install]
+WantedBy=multi-user.target

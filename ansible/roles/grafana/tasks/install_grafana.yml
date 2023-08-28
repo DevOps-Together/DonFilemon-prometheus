@@ -1,5 +1,4 @@
 ---
-
 - name: Add the key to your APT installation’s list of trusted keys 
   apt_key:
     url: " https://packages.grafana.com/gpg.key"

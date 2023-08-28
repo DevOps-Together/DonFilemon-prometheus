@@ -12,7 +12,6 @@
   notify:
   - Reload systemd
 
-
 - name: Start Prometheus service
   systemd:
     state: started
