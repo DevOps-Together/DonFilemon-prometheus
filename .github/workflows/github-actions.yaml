@@ -27,7 +27,6 @@ jobs:
     runs-on: [ubuntu-22.04]
     needs: [linter]
     steps:
-      - uses: hashicorp/setup-terraform@v2
       - name: Checkout Code
         uses: actions/checkout@v2
         with:
