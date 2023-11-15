@@ -2,5 +2,5 @@
 # handlers file for node-exporter
 - name: Reload systemd
   systemd:
-    deamon_reload: yes 
-  become: yes
+    daemon_reload: yes 
+  become: true
