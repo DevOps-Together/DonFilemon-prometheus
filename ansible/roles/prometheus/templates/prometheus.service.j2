@@ -9,11 +9,11 @@ User="{{ users }}"
 Group="{{ users }}"
 Restart=on-failure                                                                                                 
 Type=simple                                                                                                   
-ExecStart=/usr/local/bin/prometheus --config.file=/etc/prometheus/prometheus.yml \
-  --web.listen-address="{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:9090"
-  --storage.tsdb.path=/var/lib/prometheus/ \
-  --web.console.templates=/etc/prometheus/consoles \
-  --web.console.libraries=/etc/prometheus/console_libraries                                                 
+ExecStart=/usr/local/bin/prometheus --config.file={{ prometheus_config_dir }}/prometheus.yml \
+  --web.listen-address="{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:9090" \
+  --storage.tsdb.path={{ prometheus_db_dir }}/ \
+  --web.console.templates={{ prometheus_config_dir }}/consoles \
+  --web.console.libraries={{ prometheus_config_dir }}/console_libraries                                                 
 ExecReload= kill -HUP $MAINPID
 
 [Install]                                                                                                     

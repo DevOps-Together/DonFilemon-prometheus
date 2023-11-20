@@ -1,16 +1,16 @@
 ---
 
-- name: Template create configuration file named prometheus.yml in the /etc/prometheus directory   
+- name: Template create configuration file named prometheus.yml in the {{ }} directory   
   template:
     src: "{{ role_path }}/templates/prometheus.j2"
-    dest: /etc/prometheus/prometheus.yml
+    dest: "{{ prometheus_config_dir }}/prometheus.yml"
 
 - name: Template create  prometheus.service in the /etc/systemd/system directory   
   template:
     src: "{{ role_path }}/templates/prometheus.service.j2"
     dest: /etc/systemd/system/prometheus.service 
   notify:
-  - Reload systemd
+  - Reload prometheus
 
 - name: Start Prometheus service
   systemd:

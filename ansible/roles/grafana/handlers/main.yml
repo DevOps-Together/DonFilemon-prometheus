@@ -1,6 +1,12 @@
 ---
 # handlers file for grafana
-- name: Reload systemd
+- name: Reload grafana
   systemd:
     daemon_reload: yes 
   become: true
+
+- name: Restart grafana
+  systemd:
+    state: restated
+    daemon_reload: true
+    name: grafana

@@ -1,6 +1,13 @@
 ---
 # handlers file for prometheus
-- name: Reload systemd
+- name: Reload prometheus 
   systemd:
+    name: prometheus
+    state: reload
+  become: true
+- name: Restart prometheus
+  systemd: 
+    name: prometheus
+    state: restarted
     daemon_reload: yes 
   become: true
