@@ -1,13 +1,11 @@
 galaxy_info:
   author: goodbit22 
-  description: The role installs node-exporter 
+  description: The role install node-exporter 
   company: None 
   license: GPL-2.0
-  min_ansible_version: 2.1
-  # platforms:
-  # - name: Fedora
-  #   versions:
-  #   - all
-  #   - 25
-  galaxy_tags: []
-  dependencies: []
+  min_ansible_version: '2.1'
+  platforms:
+    - name: Fedora
+      versions:
+      -  all
+  galaxy_tags: ['node_exporter']

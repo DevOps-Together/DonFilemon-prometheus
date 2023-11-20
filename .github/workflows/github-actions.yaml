@@ -25,9 +25,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   test:
     runs-on: [ubuntu-22.04]
-    needs: [linter, scan]
+    needs: [linter]
     steps:
-      - uses: hashicorp/setup-terraform@v2
       - name: Checkout Code
         uses: actions/checkout@v2
         with:

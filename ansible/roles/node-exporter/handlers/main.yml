@@ -1,6 +1,11 @@
 ---
 # handlers file for node-exporter
-- name: Reload systemd
+- name: Reload node_exporter
   systemd:
-    deamon_reload: yes 
-  become: yes
+    name: node_exporter
+    state: reload
+- name: Restart node_exporter
+  systemd:
+    name: node_exporter
+    state: restarted
+    daemon_reload: yes 

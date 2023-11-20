@@ -5,20 +5,19 @@
     shell: "/bin/false"
     create_home: false
   with_items:
-    - prome
-    - node_exporter
+    - "{{ user }}"
 
 - name: Creates directories
   file:
     path: "{{ item }}"
     state: directory
   with_items:
-    - /etc/prometheus
-    - /var/lib/prometheus
+    - "{{ prometheus_config_dir }}"
+    - "{{ prometheus_db_dir }}" 
 
 - name: Check Latest version Prometheus
   shell: |
-    curl -s "https://api.github.com/repos/prometheus/prometheus/releases/latest" | grep -Po '"tag_name": "v\K[0-9.]+' 
+    curl -s "{{ prometheus_api_github_url }}" | grep -Po '"tag_name": "v\K[0-9.]+' 
   register: prometheus_version
   failed_when: prometheus_version.rc != 0 
 
@@ -26,11 +25,11 @@
   debug:
     msg: "The latest version Prometheus -> {{ prometheus_version.stdout }}"
 
-- name: "Download Prometheus https://github.com/prometheus/prometheus/releases/download/v{{  prometheus_version.stdout }}/prometheus-{{  prometheus_version.stdout }}.linux-amd64.tar.gz"
+- name: "Download Prometheus {{ prometheus_binary_url }}/v{{  prometheus_version.stdout }}/prometheus-{{  prometheus_version.stdout }}.linux-amd64.tar.gz"
   get_url:
-    url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version.stdout }}/prometheus-{{  prometheus_version.stdout }}.linux-amd64.tar.gz"
+    url: "{{ prometheus_binary_url }}/v{{ prometheus_version.stdout }}/prometheus-{{  prometheus_version.stdout }}.linux-amd64.tar.gz"
     dest: /tmp
-    mode: '0644'
+    mode: '0640'
 
 - name: Extract the Prometheus archive
   unarchive:
@@ -38,19 +37,19 @@
     dest: "/tmp"
     remote_src: true
 
-- name: Copy the “prometheus” and “promtool” binary files to the /usr/local/bin.
+- name: Copy the “prometheus” and “promtool” binary files to the {{ prometheus_binary_dir }}.
   copy:
     src: "{{ item }}"
-    dest: /usr/local/bin/
+    dest: "{{ prometheus_binary_dir  }}/"
     remote_src: true
   with_items:
     - "/tmp/prometheus-{{ prometheus_version.stdout }}.linux-amd64/prometheus"
     - "/tmp/prometheus-{{ prometheus_version.stdout }}.linux-amd64/promtool"
 
-- name: Copy the required libraries to the /etc/prometheus directory.
+- name: Copy the required libraries to the "{{ prometheus_config_dir }}" directory.
   copy:
     src: "{{ item }}"
-    dest: /etc/prometheus 
+    dest: "{{ prometheus_config_dir }}" 
     remote_src: true
   with_items:
     - "/tmp/prometheus-{{ prometheus_version.stdout }}.linux-amd64/consoles" 
@@ -59,12 +58,12 @@
 - name: change the ownership of the “prometheus” and “promtool” binary files
   file:
     path: "{{ item }}"
-    owner: prome
-    group: prome
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: '0744'
   with_items:
-    - '/usr/local/bin/prometheus'
-    - '/usr/local/bin/promtool'
-    - '/etc/prometheus/consoles'
-    - '/etc/prometheus/console_libraries'
-    - '/var/lib/prometheus'
+    - "{{ prometheus_binary_dir }}/prometheus"
+    - "{{ prometheus_binary_dir }}/promtool"
+    - "{{ prometheus_config_dir }}/consoles"
+    - "{{ prometheus_config_dir }}/console_libraries"
+    - "{{ prometheus_db_dir }}"

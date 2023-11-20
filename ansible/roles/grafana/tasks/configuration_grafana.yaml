@@ -1,0 +1,7 @@
+---
+- name: Create Datasource
+  template:
+    src: "{{ role_path }}/templates/datasource.j2"
+    dest: "{{ datasource_path }}/datasource.yml"
+  notify:
+  - Reload systemd
