@@ -3,7 +3,7 @@ galaxy_info:
   description: The role installs prometheus
   company: None
   license: GPL-2.0-
-  min_ansible_version: 2.1
+  min_ansible_version: '2.1'
   # platforms:
   # - name: Fedora
   #   versions:

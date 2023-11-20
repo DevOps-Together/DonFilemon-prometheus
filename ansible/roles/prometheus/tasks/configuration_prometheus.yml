@@ -5,9 +5,9 @@
     src: "{{ role_path }}/templates/prometheus.j2"
     dest: /etc/prometheus/prometheus.yml
 
-- name: Copy prometheus.service
-  copy:
-    src: prometheus.service
+- name: Template create  prometheus.service in the /etc/systemd/system directory   
+  template:
+    src: "{{ role_path }}/templates/prometheus.service.j2"
     dest: /etc/systemd/system/prometheus.service 
   notify:
   - Reload systemd

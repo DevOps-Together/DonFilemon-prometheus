@@ -1,5 +1,0 @@
----
-- name: "return prometheus ipv4 and port"
-  debug:
-    var: hostvars[inventory_hostname].ansible_ssh_host
-  register: prometheus_ipv4

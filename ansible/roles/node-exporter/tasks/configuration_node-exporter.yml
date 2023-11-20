@@ -34,16 +34,17 @@
 - name:  Set the ownership of the directory
   file:
     path: "/usr/local/bin/node_exporter"
-    owner: node_exporter  
-    group: node_exporter
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: '0744'
 
-- name: Copy node_exporter.service
-  copy:
-    src: node_exporter.service
+- name: Template node_exporter.service in the /etc/systemd/system/ directory   
+  template:
+    src: "{{ role_path }}/templates/node_exporter.service.j2"
     dest: /etc/systemd/system/node_exporter.service
   notify:
   - Reload systemd
+
 
 - name: Start Node-exporter service
   systemd:

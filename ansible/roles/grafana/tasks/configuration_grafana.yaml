@@ -1,0 +1,7 @@
+---
+- name: Create Datasource
+  template:
+    src: "{{ role_path }}/templates/datasource.j2"
+    dest: /etc/grafana/provisioning/datasource/datasource.yml
+  notify:
+  - Reload systemd

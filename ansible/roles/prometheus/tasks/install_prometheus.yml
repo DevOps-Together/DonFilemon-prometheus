@@ -5,8 +5,7 @@
     shell: "/bin/false"
     create_home: false
   with_items:
-    - prome
-    - node_exporter
+    - "{{ user }}"
 
 - name: Creates directories
   file:
@@ -59,8 +58,8 @@
 - name: change the ownership of the “prometheus” and “promtool” binary files
   file:
     path: "{{ item }}"
-    owner: prome
-    group: prome
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: '0744'
   with_items:
     - '/usr/local/bin/prometheus'
